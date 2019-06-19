@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 const { check, validationResult } = require('express-validator/check');
 
 // Bring in our User Model
@@ -63,7 +65,17 @@ router.post('/', [
 
     // Return the jsonwebtoken- this will enable the user to login right away when they register in the frontend
 
-    res.send('User registered');
+    const payload = {
+        user: {
+            id: user.id
+        }
+    }
+
+    jwt.sign(
+        payload,
+        config.get('jwtToken'),
+        { expiresIn: 36000 });
+
     } catch (err) {
         console.error(err.message);
         res.status(500).send('This is a Server error');
