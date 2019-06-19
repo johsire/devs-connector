@@ -1,8 +1,10 @@
 # DEVS-CONNECTOR
 
-Build and deploy a social network with MERN Stack
-    - Node.js
-    - Express
-    - React
-    - Redux
-    - MongoDB.
+Build and Deploy a Social Network SPA using MERN Stack:
+    -ES6/Js
+    -Node.js,
+    -Express,
+    -React,
+    -Redux,
+    -MongoDB,
+    -Heroku
