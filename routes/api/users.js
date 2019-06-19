@@ -10,7 +10,7 @@ const { check, validationResult } = require('express-validator/check');
 const User = require('../../models/User');
 
 // @route  POST api/user
-// @desc   Register user
+// @desc   Register User
 // @access Public
 
 // Validate the input & report any errors before creating the user
@@ -31,7 +31,7 @@ router.post('/', [
     const { name, email, password } = req.body;
 
     try{
-    // Check if user exist- send back and error if they do
+        // Check if user exist- send back and error if they do
         let user = await User.findOne({ email: email });
 
         if(user) {
@@ -70,7 +70,8 @@ router.post('/', [
         }
     }
 
-    // Return the jsonwebtoken- this will enable the user to login right away when they register in the frontend
+    // Return the jsonwebtoken-
+    // this will enable the user to login right away when they register in the frontend
     jwt.sign(
         payload,
         config.get('jwtSecret'),
