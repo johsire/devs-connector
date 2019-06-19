@@ -60,21 +60,25 @@ router.post('/', [
     // Encrypt the password using bcrypt
     user.password = await bcrypt.hash(password, salt);
 
-    // Save the new user
+    // Save the new user in the db
     await user.save();
 
-    // Return the jsonwebtoken- this will enable the user to login right away when they register in the frontend
-
+    // Get the payload which includes the user id
     const payload = {
         user: {
             id: user.id
         }
     }
 
+    // Return the jsonwebtoken- this will enable the user to login right away when they register in the frontend
     jwt.sign(
         payload,
-        config.get('jwtToken'),
-        { expiresIn: 36000 });
+        config.get('jwtSecret'),
+        { expiresIn: 36000 },
+        (err, token) => {
+            if (err) throw err;
+            res.json({ token })
+        });
 
     } catch (err) {
         console.error(err.message);
