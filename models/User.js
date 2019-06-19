@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// Create Schema
+// Create User Schema obj w/ all fields we need
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
