@@ -24,62 +24,62 @@ router.post('/', [
         .isLength({ min: 6 })
 ], async (req, res) => {
     const errors = validationResult(req);
-    if(!errors.isEmpty()) {
+    if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
 
     const { name, email, password } = req.body;
 
-    try{
+    try {
         // Check if user exist- send back and error if they do
         let user = await User.findOne({ email: email });
 
-        if(user) {
+        if (user) {
             return res
                 .status(400)
-                .json({ errors: [ { msg: 'User already exists' } ] });
+                .json({ errors: [{ msg: 'User already exists' }] });
         };
 
-    // Get users gravatar
-    const avatar = gravatar.url(email, {
-        s: '200',
-        r: 'pg',
-        d: 'mm'
-    });
-
-    user = new User({
-        name,
-        email,
-        avatar,
-        password
-    });
-
-    // Create our Salt to hash our password before we encrypt it & pass 10 rounds
-    const salt = await bcrypt.genSalt(10);
-
-    // Encrypt the password using bcrypt
-    user.password = await bcrypt.hash(password, salt);
-
-    // Save the new user in the db
-    await user.save();
-
-    // Get the payload which includes the user id
-    const payload = {
-        user: {
-            id: user.id
-        }
-    }
-
-    // Return the jsonwebtoken-
-    // this will enable the user to login right away when they register in the frontend
-    jwt.sign(
-        payload,
-        config.get('jwtSecret'),
-        { expiresIn: 36000 },
-        (err, token) => {
-            if (err) throw err;
-            res.json({ token })
+        // Get users gravatar
+        const avatar = gravatar.url(email, {
+            s: '200',
+            r: 'pg',
+            d: 'mm'
         });
+
+        user = new User({
+            name,
+            email,
+            avatar,
+            password
+        });
+
+        // Create our Salt to hash our password before we encrypt it & pass 10 rounds
+        const salt = await bcrypt.genSalt(10);
+
+        // Encrypt the password using bcrypt
+        user.password = await bcrypt.hash(password, salt);
+
+        // Save the new user in the db
+        await user.save();
+
+        // Get the payload which includes the user id
+        const payload = {
+            user: {
+                id: user.id
+            }
+        }
+
+        // Return the jsonwebtoken-
+        // this will enable the user to login right away when they register in the frontend
+        jwt.sign(
+            payload,
+            config.get('jwtSecret'),
+            { expiresIn: 36000 },
+            (err, token) => {
+                if (err) throw err;
+                res.json({ token })
+            });
 
     } catch (err) {
         console.error(err.message);
