@@ -86,7 +86,7 @@ router.post(
     if (instagram) profileFields.social.instagram = instagram;
 
     try {
-      let profile = await profile.findOne({ user: req.user.id });
+      let profile = await Profile.findOne({ user: req.user.id });
 
       if (profile) {
         // Update Profile
@@ -95,7 +95,7 @@ router.post(
           { $set: profileFields },
           { new: true });
 
-          return res.json(profile);
+        return res.json(profile);
       };
 
       // Create Profile if none exists
@@ -105,7 +105,7 @@ router.post(
       res.json(profile);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server Error!')
+      res.status(500).send('Server Error!');
     }
   });
 
