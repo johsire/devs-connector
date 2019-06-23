@@ -1,21 +1,33 @@
+// Dependencies
 const express = require('express');
 const router = express.Router();
-const auth = require('../../middleware/auth');
-const { check, validationResult } = require('express-validator/check');
+const {
+  check,
+  validationResult
+} = require('express-validator/check');
 
+// Import Directories
+const auth = require('../../middleware/auth');
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+
+
+//---------------USER PROFILE START---------------\\
 
 // @route  GET api/profile/me
 // @desc   Get Current User's Profile
 // @access Private
 router.get('/me', auth, async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.user.id }).populate('user',
+    const profile = await Profile.findOne({
+      user: req.user.id
+    }).populate('user',
       ['name', 'avatar']);
 
     if (!profile) {
-      return res.status(400).json({ msg: 'There is no profile for this user' });
+      return res.status(400).json({
+        msg: 'There is no profile for this user'
+      });
     }
 
     res.json(profile);
@@ -38,13 +50,16 @@ router.post(
         .isEmpty(),
       check('skills', 'Skills is required')
         .not()
-        .isEmpty()]
+        .isEmpty()
+    ]
   ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+      return res.status(400).json({
+        errors: errors.array()
+      });
+    };
 
     const {
       company,
@@ -72,7 +87,7 @@ router.post(
     if (githubusername) profileFields.githubusername = githubusername;
     if (skills) {
       profileFields.skills = skills.split(',').map((skill) => skill.trim());
-    }
+    };
 
     // Build Social Profiles Object
     profileFields.social = {};
@@ -83,16 +98,22 @@ router.post(
     if (instagram) profileFields.social.instagram = instagram;
 
     try {
-      let profile = await Profile.findOne({ user: req.user.id });
+      let profile = await Profile.findOne({
+        user: req.user.id
+      });
 
       if (profile) {
         // Update Profile
-        profile = await Profile.findOneAndUpdate({ user: req.user.id },
-          { $set: profileFields },
-          { new: true });
+        profile = await Profile.findOneAndUpdate({
+          user: req.user.id
+        }, {
+          $set: profileFields
+        }, {
+          new: true
+        });
 
         return res.json(profile);
-      }
+      };
 
       // Create Profile if none exists
       profile = new Profile(profileFields);
@@ -111,7 +132,9 @@ router.post(
 // @access Public
 router.get('/', async (req, res) => {
   try {
-    const profiles = await Profile.find().populate('user', ['name', 'avatar']);
+    const profiles = await Profile.find()
+      .populate('user', ['name', 'avatar']);
+
     res.json(profiles);
   } catch (err) {
     console.error(err.message);
@@ -126,16 +149,20 @@ router.get('/user/:user_id', async (req, res) => {
   try {
     const profile = await Profile.findOne({
       user: req.params.user_id
-      }).populate('user', ['name', 'avatar']);
+    }).populate('user', ['name', 'avatar']);
 
     // Check if a Profile for the User Exists
-    if (!profile) return res.status(400).json({ msg: 'Profile not found!' });
+    if (!profile) return res.status(400).json({
+      msg: 'Profile not found!'
+    });
 
     res.json(profile);
   } catch (err) {
     console.error(err.message);
     if (err.kind === 'ObjectId') {
-      return res.status(400).json({ msg: 'Profile not found!' });
+      return res.status(400).json({
+        msg: 'Profile not found!'
+      });
     }
     res.status(500).send('Server Error!');
   }
@@ -149,17 +176,29 @@ router.delete('/', auth, async (req, res) => {
     // Todo - Remove User Posts
 
     // Remove Profile
-    await Profile.findOneAndRemove({ user: req.user.id });
+    await Profile.findOneAndRemove({
+      user: req.user.id
+    });
 
     // Remove User
-    await User.findOneAndRemove({ _id: req.user.id });
+    await User.findOneAndRemove({
+      _id: req.user.id
+    });
 
-    res.json({ msg: 'User Deleted!' });
+    res.json({
+      msg: 'User Deleted!'
+    });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error!');
   }
 });
+
+//-------------------USER PROFILE END-----------------\\
+
+
+
+//--------------PROFILE EXPERIENCE START---------------\\
 
 // @route    PUT api/profile/experience
 // @desc     Add Profile Experience
@@ -183,7 +222,9 @@ router.put(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({
+        errors: errors.array()
+      });
     }
 
     const {
@@ -207,7 +248,9 @@ router.put(
     };
 
     try {
-      const profile = await Profile.findOne({ user: req.user.id });
+      const profile = await Profile.findOne({
+        user: req.user.id
+      });
 
       profile.experience.unshift(newExp);
 
@@ -220,16 +263,18 @@ router.put(
     }
   });
 
-  // @route    DELETE api/profile/experience/:exp_id
-  // @desc     Delete Experience from Profile
-  // @access   Private
+// @route    DELETE api/profile/experience/:exp_id
+// @desc     Delete Experience from Profile
+// @access   Private
 router.delete('/experience/:exp_id', auth, async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.user.id });
+    const profile = await Profile.findOne({
+      user: req.user.id
+    });
 
     // Get the Remove Index
-    const removeIndex = profile.experience.map(item => item.id).indexOf
-      (req.params.exp_id);
+    const removeIndex = profile.experience.map(
+      item => item.id).indexOf(req.params.exp_id);
 
     profile.experience.splice(removeIndex, 1);
 
@@ -242,5 +287,7 @@ router.delete('/experience/:exp_id', auth, async (req, res) => {
     res.status(500).send('Server Error!');
   }
 });
+
+//--------------PROFILE EXPERIENCE END---------------\\
 
 module.exports = router;
