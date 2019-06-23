@@ -21,11 +21,15 @@ const Profile = require('../../models/Profile');
 // @route  POST api/posts
 // @desc   Create a Post
 // @access Private
-router.post('/', [auth, [
+router.post('/',
+  [
+    auth,
+    [
     check('text', 'Text is required!')
     .not()
     .isEmpty()
-  ]],
+  ]
+],
   async (req, res) => {
     const errors = validationResult(req);
 
@@ -58,7 +62,8 @@ router.post('/', [auth, [
 // @route    GET api/posts
 // @desc     Get All Posts
 // @access   Private
-router.get('/', auth, async (req, res) => {
+router.get('/',
+  auth, async (req, res) => {
   try {
     const posts = await Post.find().sort({
       date: -1
@@ -74,7 +79,8 @@ router.get('/', auth, async (req, res) => {
 // @route    GET api/posts/:id
 // @desc     Get Posts by ID
 // @access   Private
-router.get('/:id', auth, async (req, res) => {
+router.get('/:id',
+  auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -100,7 +106,8 @@ router.get('/:id', auth, async (req, res) => {
 // @route    DELETE api/posts/:id
 // @desc     Delete a Post
 // @access   Private
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id',
+  auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -138,7 +145,8 @@ router.delete('/:id', auth, async (req, res) => {
 // @route    PUT api/posts/like/:id
 // @desc     Like a Post
 // @access   Private
-router.put('/like/:id', auth, async (req, res) => {
+router.put('/like/:id',
+  auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -170,7 +178,8 @@ router.put('/like/:id', auth, async (req, res) => {
 // @route    PUT api/posts/unlike/:id
 // @desc     Unlike a Post
 // @access   Private
-router.put('/unlike/:id', auth, async (req, res) => {
+router.put('/unlike/:id',
+  auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -201,6 +210,49 @@ router.put('/unlike/:id', auth, async (req, res) => {
     res.status(500).send('Server Error!');
   }
 });
+
+// @route  POST api/posts/comment/:id
+// @desc   Comment on a Post
+// @access Private
+router.post('/comment/:id',
+  [auth,
+    [
+    check('text', 'Text is required!')
+    .not()
+    .isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        errors: errors.array()
+      });
+    };
+
+    try {
+      const user = await User.findById(req.user.id).select('-password');
+      const post = await Post.findById(req.params.id);
+
+      const newComment = {
+        text: req.body.text,
+        name: user.name,
+        avatar: user.avatar,
+        user: req.user.id
+      };
+
+      post.comments.unshift(newComment);
+
+      await post.save();
+
+      res.json(post.comments);
+
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error!');
+    }
+  });
 
 //-------------------USER POST END-------------------\\
 
