@@ -1,4 +1,6 @@
 {
-  "mongoURI": "mongodb+srv://johsire2020:johsire2020@devsconnect-hqj4o.mongodb.net/test?retryWrites=true&w=majority",
-  "jwtSecret": "MySuperSecreToken"
+  "mongoURI": "",
+  "jwtSecret": "",
+  "githubClientId": "",
+  "githubSecret": ""
 }
