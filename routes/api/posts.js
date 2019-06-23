@@ -138,11 +138,12 @@ router.delete('/:id', auth, async (req, res) => {
 // @route    PUT api/posts/like/:id
 // @desc     Like a Post
 // @access   Private
-router.get('/like/:id', auth, async (req, res) => {
+router.put('/like/:id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
-    // Check if post has already been like to avoid multiple likes on same post
+    // Check if post has already has a like to avoid multiple likes on same post
+    // This is why we check if the length is > 0
     if (post.likes.filter(like => like.user.toString() === req.user.id).length > 0) {
       return res.status(400).json({
         msg: 'Post already liked!'
@@ -150,6 +151,41 @@ router.get('/like/:id', auth, async (req, res) => {
     };
 
     post.likes.unshift({ user: req.user.id });
+
+    await post.save();
+
+    res.json(post.likes);
+  } catch (err) {
+    console.error(err.message);
+
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({
+        msg: 'Post not found!'
+      });
+    }
+    res.status(500).send('Server Error!');
+  }
+});
+
+// @route    PUT api/posts/unlike/:id
+// @desc     Unlike a Post
+// @access   Private
+router.put('/unlike/:id', auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    // Check if post has has a like since we can't unlike a post we haven't liked yet
+    // This is why we check if the length is = 0
+    if (post.likes.filter(like => like.user.toString() === req.user.id).length === 0) {
+      return res.status(400).json({
+        msg: 'Post has not yet been liked!'
+      });
+    };
+
+    // Get removed index
+    const removeIndex = post.likes.map(like => like.user.toString()).indexOf(req.user.id);
+
+    post.likes.splice(removeIndex, 1)
 
     await post.save();
 
