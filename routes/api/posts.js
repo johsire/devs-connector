@@ -98,36 +98,43 @@ router.get('/:id', auth, async (req, res) => {
 });
 
 // @route    DELETE api/posts/:id
-// @desc     Delete a post
+// @desc     Delete a Post
 // @access   Private
 router.delete('/:id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
     if (!post) {
-      return res.status(404).json({ msg: 'Post not found!' });
+      return res.status(404).json({
+        msg: 'Post not found!'
+      });
     }
 
     // Check user to ensure that they are deleting a post that belongs to them
     // Since we are compare an obj & string we need to convert the obj to string in order to compare
     // the same data type. Otherwise this will never work, even if its the right user deleting their post
-    if (post.user.toString !== req.user.id) {
-      return res.status(401).json({ msg: 'User not authorized!' });
+    if (post.user.toString() !== req.user.id) {
+      return res.status(401).json({
+        msg: 'User not authorized!'
+      });
     }
 
     await post.remove();
 
-    res.json({ msg: 'Post successfully deleted!' });
+    res.json({
+      msg: 'Post successfully deleted!'
+    });
   } catch (err) {
     console.error(err.message);
-
     if (err.kind === 'ObjectId') {
-      return res.status(404).json({ msg: 'Post not found!' })
+      return res.status(404).json({
+        msg: 'Post not found!'
+      });
     }
-
     res.status(500).send('Server Error!');
   }
 });
+
 
 //-------------------USER POST END-------------------\\
 
