@@ -5,6 +5,9 @@ import Landing from "./component/layout/Landing";
 import Login from "./component/auth/Login";
 import Register from "./component/auth/Register";
 
+// REDUX
+import { Provider } from 'react-redux';
+
 import "./App.css";
 
 const App = () => (
