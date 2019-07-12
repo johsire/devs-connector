@@ -11,7 +11,7 @@ import {
 } from "./types";
 
 
-// Load User Function
+// Load User Action Function
 export const loadUser = () => async dispatch => {
   // check if token exists from localStorage;
   // if it does set it to our headers
