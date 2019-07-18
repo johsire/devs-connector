@@ -1,4 +1,5 @@
 import {
+  GET_REPOS,
   GET_PROFILE,
   GET_PROFILES,
   UPDATE_PROFILE,
@@ -47,6 +48,13 @@ export default function(state = initialState, action) {
         repos: [],
         loading: false
       };
+
+    case GET_REPOS:
+      return {
+        ...state,
+        repos: payload,
+        loading: false
+      }
 
     default:
       return state;
