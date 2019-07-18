@@ -44,4 +44,4 @@ Experience.propTypes = {
   experience: PropTypes.array.isRequired
 };
 
-export default Experience;
+export default connect(null)(Experience);

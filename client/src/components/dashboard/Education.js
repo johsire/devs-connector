@@ -44,4 +44,4 @@ Education.propTypes = {
   education: PropTypes.array.isRequired
 };
 
-export default Education;
+export default connect(null)(Education);
