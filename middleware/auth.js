@@ -1,5 +1,5 @@
-const jwt = require("jsonwebtoken");
 const config = require("config");
+const jwt = require("jsonwebtoken");
 
 // Middleware Fn- a fn that has access to req & res objects
 // next is a call back fn that we run so it moves to the next part of the middleware

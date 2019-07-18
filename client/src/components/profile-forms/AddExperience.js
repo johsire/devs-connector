@@ -1,7 +1,7 @@
-import React, { Fragment, useState } from "react";
+import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React, { Fragment, useState } from "react";
 
 // Actions
 import { addExperience } from "../../actions/profile";

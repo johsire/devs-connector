@@ -1,8 +1,8 @@
 // Make our http request here
 import axios from 'axios';
+
 import { setAlert } from './alert';
 import setAuthToken from "../utilities/setAuthToken";
-
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,

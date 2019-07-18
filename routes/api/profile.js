@@ -1,7 +1,8 @@
 // Dependencies
+const config = require("config");
 const express = require("express");
 const request = require("request");
-const config = require("config");
+
 const router = express.Router();
 const { check,
   validationResult

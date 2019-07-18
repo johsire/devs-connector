@@ -1,7 +1,8 @@
-import React, { Fragment, useState, useEffect } from "react";
+import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React, { Fragment, useState, useEffect } from "react";
+
 import { createProfile, getCurrentProfile } from "../../actions/profile";
 
 const EditProfile = ({
@@ -45,7 +46,8 @@ const EditProfile = ({
       youtube: loading || !profile.social ? "" : profile.social.youtube,
       instagram: loading || !profile.social ? "" : profile.social.instagram
     });
-  }, [loading]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, getCurrentProfile]);
 
   const {
     company,
