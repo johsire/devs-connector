@@ -69,7 +69,7 @@ const CreateProfile = props => {
             placeholder="Company"
             name="company"
             value={company}
-            onChange={e => onchange(e)}
+            onChange={e => onChange(e)}
           />
           <small className="form-text">
             Could be your own company or one you work for
@@ -81,7 +81,7 @@ const CreateProfile = props => {
             placeholder="Website"
             name="website"
             value={website}
-            onChange={e => onchange(e)}
+            onChange={e => onChange(e)}
           />
           <small className="form-text">
             Could be your own or a company website
