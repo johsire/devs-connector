@@ -1,10 +1,7 @@
 import axios from "axios";
 import { setAlert } from "./alert";
 
-import {
-  GET_PROFILE,
-  PROFILE_ERROR
-} from "./types";
+import { GET_PROFILE, PROFILE_ERROR } from "./types";
 
 // Get Current User Profile Function
 export const getCurrentProfile = () => async dispatch => {
@@ -48,7 +45,10 @@ export const createProfile = (
 
     dispatch(
       setAlert(
-        edit ? "Profile Successfully Updated!" : "Profile Successfully Created!"
+        edit
+          ? "Profile Successfully Updated!"
+          : "Profile Successfully Created!",
+        "success"
       )
     );
 
