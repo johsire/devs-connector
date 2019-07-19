@@ -46,7 +46,6 @@ const EditProfile = ({
       youtube: loading || !profile.social ? "" : profile.social.youtube,
       instagram: loading || !profile.social ? "" : profile.social.instagram
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, getCurrentProfile]);
 
   const {
@@ -79,7 +78,7 @@ const EditProfile = ({
         <i className="fas fa-user" /> Let's get some information to make your
         profile stand out
       </p>
-
+      
       <small>* = required field</small>
       <form className="form" onSubmit={e => onSubmit(e)}>
         <div className="form-group">
@@ -245,7 +244,7 @@ const EditProfile = ({
               />
             </div>
           </Fragment>
-        )};
+        )}
 
         <input type="submit" className="btn btn-primary my-1" />
         <Link className="btn btn-light my-1" to="/dashboard">
