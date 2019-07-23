@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import React, { Fragment, useEffect } from "react";
 
 import { getProfileById } from "../../actions/profile";
+import ProfileExperience from "./ProfileExperience";
 import ProfileAbout from "./ProfileAbout";
 import ProfileTop from "./ProfileTop";
 import Spinner from "../layout/Spinner";
@@ -37,6 +38,20 @@ const Profile = ({
           <div className="profile-grid my-1">
             <ProfileTop profile={profile} />
             <ProfileAbout profile={profile} />
+            <div className="profile-exp bg-white p-2" />
+            <h2 className="text-primary">Experience</h2>
+            {profile.experience.length > 0 ? (
+              <Fragment>
+                {profile.experience.map(experience => (
+                  <ProfileExperience
+                    key={experience._id}
+                    experience={experience}
+                  />
+                ))}
+              </Fragment>
+            ) : (
+              <h4>No experience credentials</h4>
+            )}
           </div>
         </Fragment>
       )}
