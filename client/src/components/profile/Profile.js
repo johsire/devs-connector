@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import React, { Fragment, useEffect } from "react";
 
 import { getProfileById } from "../../actions/profile";
+import ProfileAbout from "./ProfileAbout";
 import ProfileTop from "./ProfileTop";
 import Spinner from "../layout/Spinner";
 
@@ -35,6 +36,7 @@ const Profile = ({
             )}
           <div className="profile-grid my-1">
             <ProfileTop profile={profile} />
+            <ProfileAbout profile={profile} />
           </div>
         </Fragment>
       )}
