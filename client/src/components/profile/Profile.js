@@ -4,17 +4,14 @@ import PropTypes from "prop-types";
 import React, { Fragment, useEffect } from "react";
 
 import { getProfileById } from "../../actions/profile";
-import Spinner from "../layout/Spinner";
 import ProfileTop from "./ProfileTop";
+import Spinner from "../layout/Spinner";
 
 const Profile = ({
-  profile: {
-    profile,
-    loading
-  },
+  getProfileById,
+  profile: { profile, loading },
   auth,
-  match,
-  getProfileById
+  match
 }) => {
   useEffect(() => {
     getProfileById(match.params.id);
@@ -25,7 +22,7 @@ const Profile = ({
       {profile === null || loading ? (
         <Spinner />
       ) : (
-        <Link>
+        <Fragment>
           <Link to="/profiles" className="btn btn-light">
             Back To Profiles
           </Link>
@@ -36,13 +33,11 @@ const Profile = ({
                 Edit Profile
               </Link>
             )}
-        </Link>
-        )}
-
-      <div class="profile-grid my-1">
-        <ProfileTop profile={profile} />
-      </div>
-
+          <div className="profile-grid my-1">
+            <ProfileTop profile={profile} />
+          </div>
+        </Fragment>
+      )}
     </Fragment>
   );
 };
