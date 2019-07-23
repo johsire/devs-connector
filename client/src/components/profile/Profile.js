@@ -5,6 +5,7 @@ import React, { Fragment, useEffect } from "react";
 
 import { getProfileById } from "../../actions/profile";
 import Spinner from "../layout/Spinner";
+import ProfileTop from "./ProfileTop";
 
 const Profile = ({
   profile: {
@@ -17,8 +18,7 @@ const Profile = ({
 }) => {
   useEffect(() => {
     getProfileById(match.params.id);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getProfileById]);
+  }, [getProfileById, match.params.id]);
 
   return (
     <Fragment>
@@ -37,7 +37,12 @@ const Profile = ({
               </Link>
             )}
         </Link>
-      )}
+        )}
+
+      <div class="profile-grid my-1">
+        <ProfileTop profile={profile} />
+      </div>
+
     </Fragment>
   );
 };
