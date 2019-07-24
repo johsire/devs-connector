@@ -10,7 +10,8 @@ const ProfileExperience = ({
     current,
     to,
     from,
-    description }
+    description
+  }
 }) => (
   <div>
     <h3 className="text-dark">{company}</h3>
