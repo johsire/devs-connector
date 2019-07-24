@@ -1,9 +1,13 @@
-import React, { Fragment, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
   Switch
 } from "react-router-dom";
+
+import React, {
+  Fragment,
+  useEffect
+} from "react";
 
 // Private & Public Routes
 import Navbar from "./components/layout/Navbar";
@@ -16,6 +20,7 @@ import CreateProfile from "./components/profile-forms/CreateProfile";
 import EditProfile from "./components/profile-forms/EditProfile";
 import AddExperience from "./components/profile-forms/AddExperience";
 import AddEducation from "./components/profile-forms/AddEducation";
+import Posts from "./components/posts/Posts";
 import Profile from "./components/profile/Profile";
 import Profiles from "./components/profiles/Profiles";
 import PrivateRoute from "./components/routing/PrivateRoute";
@@ -77,6 +82,7 @@ const App = () => {
                 path="/add-education"
                 component={AddEducation}
               />
+              <PrivateRoute exact path="/posts" component={Posts} />
             </Switch>
           </section>
         </Fragment>
