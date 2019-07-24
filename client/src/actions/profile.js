@@ -9,7 +9,7 @@ import {
   PROFILE_ERROR,
   UPDATE_PROFILE,
   CLEAR_PROFILE,
-  ACCOUNT_DELETED,
+  ACCOUNT_DELETED
 } from "./types";
 
 // Get current users profile
@@ -122,11 +122,10 @@ export const createProfile = (
       payload: res.data
     });
 
-    dispatch(setAlert(
-      edit
-        ? "Profile Successfully Updated!"
-        : "Profile Successfully Created!",
-          "success"
+    dispatch(setAlert(edit
+      ? "Profile Successfully Updated!"
+      : "Profile Successfully Created!",
+        "success"
     ));
 
     if (!edit) {
@@ -282,7 +281,7 @@ export const deleteAccount = () => async dispatch => {
       dispatch({ type: ACCOUNT_DELETED });
 
       dispatch(setAlert("Your account has been permanently deleted!"));
-      
+
     } catch (err) {
       dispatch({
         type: PROFILE_ERROR,

@@ -10,7 +10,7 @@ const ProfileExperience = ({
     location,
     current,
     to,
-    from,
+    from, 
     description
   }
 }) => (
