@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import React, { Fragment, useEffect } from "react";
 
 import { getPost } from "../../actions/post";
+import CommentForm from "../post/CommentForm";
 import PostItem from "../posts/PostItem";
 import Spinner from "../layout/Spinner";
 
@@ -20,6 +21,7 @@ const Post = ({ getPost, match, post: { post, loading } }) => {
         Back to Posts
       </Link>
       <PostItem post={post} showActions={false} />
+      <CommentForm postId={post._id} />
     </Fragment>
   );
 };
