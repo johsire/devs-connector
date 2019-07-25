@@ -5,6 +5,7 @@ import React, { Fragment, useEffect } from "react";
 
 import { getPost } from "../../actions/post";
 import CommentForm from "../post/CommentForm";
+import CommentItem from "../post/CommentItem";
 import PostItem from "../posts/PostItem";
 import Spinner from "../layout/Spinner";
 
@@ -22,6 +23,15 @@ const Post = ({ getPost, match, post: { post, loading } }) => {
       </Link>
       <PostItem post={post} showActions={false} />
       <CommentForm postId={post._id} />
+      <div className="comments">
+        {post.comments.map(comment => (
+          <CommentItem
+            key={comment._id}
+            comment={comment}
+            postId={post._id}
+          />
+        ))}
+      </div>
     </Fragment>
   );
 };
