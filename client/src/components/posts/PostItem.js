@@ -6,13 +6,15 @@ import React, { Fragment } from "react";
 
 import {
   addLike,
-  removeLike
+  removeLike,
+  deletePost
 } from "../../actions/post";
 
 const PostItem = ({
   auth,
   addLike,
   removeLike,
+  deletePost,
   post: {
     _id,
     text,
@@ -42,7 +44,7 @@ const PostItem = ({
           className="btn btn-light">
         <i className="fas fa-thumbs-up" />{" "}
         <span>{likes.length > 0 && <span>{likes.length}</span>}</span>
-      </button>
+        </button>
         <button
           onClick={e => removeLike(_id)}
           type="button"
@@ -56,7 +58,10 @@ const PostItem = ({
         )}
       </Link>
       {!auth.loading && user === auth.user._id && (
-        <button type="button" className="btn btn-danger">
+        <button
+          onClick={e => deletePost(_id)}
+          type="button"
+          className="btn btn-danger">
           <i className="fas fa-times" />
         </button>
       )}
@@ -66,7 +71,10 @@ const PostItem = ({
 
 PostItem.propTypes = {
   post: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  addLike: PropTypes.func.isRequired,
+  removeLike: PropTypes.func.isRequired,
+  deletePost: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -75,5 +83,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addLike, removeLike }
+  { addLike, removeLike, deletePost }
 )(PostItem);
